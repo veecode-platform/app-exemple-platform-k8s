@@ -1,0 +1,8 @@
+project:
+  name: app-exemple-platform-k8s
+  description: 
+  java:
+    package: codes.platform.appExamplePlatform
+  language: java
+  framework: springboot
+  applicationPort: 8081
