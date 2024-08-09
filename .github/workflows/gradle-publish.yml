@@ -74,12 +74,13 @@ jobs:
 
       - name: Publish K8S Artifact
         uses: dmnemec/copy_file_to_another_repo_action@main
+        continue-on-error: true
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           use_rsync: true
           source_file: 'k8s/'
-          destination_repo: veecode-apr/argocd-repository
+          destination_repo: veecode-apr/argocd-repositorya
           destination_folder: '/app-exemple-platform-k8s/'
           destination_branch: 'main'
           user_email: 'veecode-bot@vee.codes'
@@ -129,6 +130,7 @@ jobs:
           yq ".servers += [{\"url\": \"${{ env.MOCK_SERVER }}$([[ ! "${{ env.MOCK_SERVER }}" == */ ]] && echo "/")${NAME}\"}]" -i ./openapi-swagger.yaml
 
       - name: Build devportal template
+        continue-on-error: true      
         env:
           NAME: ""
           PATH_API: ""
@@ -150,13 +152,14 @@ jobs:
           yq eval ".spec.definition = \"$(yq -I4 ./openapi-swagger.yaml)\"" --inplace "api/$NAME.yaml"
 
       - name: Publish to spec house
+        continue-on-error: true      
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           destination_branch: main
           source_file:  'api'
-          destination_repo: veecode-apr/devportal-catalog
+          destination_repo: veecode-apr/devportal-cataloga
           destination_folder: '/'
           user_name: ${{ github.actor }}
           commit_message: 'Pipeline commit'
